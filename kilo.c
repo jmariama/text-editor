@@ -15,7 +15,7 @@ void enableRawMode() {
 
     struct termios raw = orig_termios;
 
-    raw.c_lflag &= ~(ECHO | ICANON); //ICANON flag disabled.
+    raw.c_lflag &= ~(ECHO | ICANON |ISIG); //ICANON flag disabled, ~ISIG disables ctrlc & ctrlc signals
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
 
