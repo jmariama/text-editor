@@ -46,6 +46,14 @@ char editorReadKey() {
   int nread;
   char c;
 
+//**outputs **//
+void editorRefreshScreen() {
+  write(STDOUT_FILENO, "\x1b[2J", 4);
+}
+
+
+
+
   //*inputs*//
 
   // WAITS FOR A KEYPRESS THEN HANDLES IT
@@ -73,6 +81,7 @@ int main(void) {
 
     while (1) {
     editorProcessKeypress();
+    editorRefreshScreen();
   }
     return 0;
 }
