@@ -56,12 +56,26 @@ while ((nread = read(STDIN_FILENO, &c, 1)) != 1) {
   return c;
 }
 
+//draw hearts at beginning of each row
+void editorDrawRows() {
+  int y;
+  for (y = 0; y < 24; y++) { //draws on 24 rows
+    write(STDOUT_FILENO, "\xE2\x99\xA5\r\n", 5); //utf-8 encoding
+  }
+}
+
 /*** output ***/
 void editorRefreshScreen() {
   //clears screen
   write(STDOUT_FILENO, "\x1b[2J", 4);
+  write(STDOUT_FILENO, "\x1b[H", 3); // repositions cursor
+  //draws heart on each row
+  editorDrawRows();
+  //repositions cursor
   write(STDOUT_FILENO, "\x1b[H", 3);
 }
+
+
 
 
 // WAITS FOR KEYPRESS AND PROCESSES IT
