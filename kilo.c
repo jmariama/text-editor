@@ -16,6 +16,10 @@ struct termios orig_termios;
 /* terminal */
 
 void die(const char *s) {
+  //clears screen on exit
+  write(STDOUT_FILENO, "\x1b[2J", 4);
+  write(STDOUT_FILENO, "\x1b[H", 3);
+
     perror(s);
     exit(1);
 }
@@ -54,6 +58,7 @@ while ((nread = read(STDIN_FILENO, &c, 1)) != 1) {
 
 /*** output ***/
 void editorRefreshScreen() {
+  //clears screen
   write(STDOUT_FILENO, "\x1b[2J", 4);
   write(STDOUT_FILENO, "\x1b[H", 3);
 }
@@ -65,6 +70,9 @@ void editorRefreshScreen() {
   char c = editorReadKey();
   switch (c) {
     case CTRL_KEY('q'):
+      //clears screen when ctrl+q is hit
+      write(STDOUT_FILENO, "\x1b[2J", 4);
+      write(STDOUT_FILENO, "\x1b[H", 3);
       exit(0);
       break;
   }
