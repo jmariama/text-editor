@@ -45,34 +45,34 @@ void enableRawMode() {
 char editorReadKey() {
   int nread;
   char c;
-
-//**outputs **//
-void editorRefreshScreen() {
-  write(STDOUT_FILENO, "\x1b[2J", 4);
-}
-
-
-
-
-  //*inputs*//
-
-  // WAITS FOR A KEYPRESS THEN HANDLES IT
-  while ((nread = read(STDIN_FILENO, &c, 1)) != 1) {
+while ((nread = read(STDIN_FILENO, &c, 1)) != 1) {
     if (nread ==-1 && errno != EAGAIN) die("read");
 
   }
   return c;
 }
 
-void editorProcessKeypress() {
-  char c = editorReadKey();
+/*** output ***/
+void editorRefreshScreen() {
+  write(STDOUT_FILENO, "\x1b[2J", 4);
+  write(STDOUT_FILENO, "\x1b[H", 3);
+}
 
+
+// WAITS FOR KEYPRESS AND PROCESSES IT
+  //*inputs*//
+  void editorProcessKeypress() {
+  char c = editorReadKey();
   switch (c) {
     case CTRL_KEY('q'):
-    exit(0);
-    break;
+      exit(0);
+      break;
   }
 }
+
+
+
+
 
 /* initialization */
 int main(void) {
