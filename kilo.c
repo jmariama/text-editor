@@ -13,10 +13,12 @@
 
 /* data */
 struct editorConfig {
+  int screenrows;
+  int screencols;
 struct termios orig_termios;
 };
 
-struct editorConfig E; //global variable that contains editors state
+struct editorConfig E; //global variable that contains editors state and initializes above defined struct
 
 
 /* terminal */
@@ -80,7 +82,7 @@ int getWindowSize(int *rows, int*cols) {
 //draw hearts at beginning of each row
 void editorDrawRows() {
   int y;
-  for (y = 0; y < 24; y++) { //draws on 24 rows
+  for (y = 0; y < E.screenrows; y++) { //draws on 24 rows
     write(STDOUT_FILENO, "\xE2\x99\xA5\r\n", 5); //utf-8 encoding
   }
 }
@@ -118,9 +120,15 @@ void editorRefreshScreen() {
 
 
 /* initialization */
+
+// initializes fields in the E struct.
+void initEditor() {
+  if (getWindowSize(&E.screenrows, &E.screencols) == 01) die("getWindowSize");
+}
 int main(void) {
 
     enableRawMode();
+    initEditor();
 
     while (1) {
     editorProcessKeypress();
